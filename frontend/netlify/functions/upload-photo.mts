@@ -2,9 +2,15 @@ import type { Context } from '@netlify/functions';
 import { createClient } from '@supabase/supabase-js';
 import jwt from 'jsonwebtoken';
 
-const SUPABASE_URL = process.env.SUPABASE_URL!;
-const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY!;
-const JWT_SECRET = process.env.JWT_SECRET_KEY || 'Howstodayqcapp';
+function getEnv(key: string): string {
+  const val = Netlify.env.get(key) || process.env[key];
+  if (!val) throw new Error(`缺少环境变量: ${key}`);
+  return val;
+}
+
+const SUPABASE_URL = getEnv('SUPABASE_URL');
+const SUPABASE_SERVICE_KEY = getEnv('SUPABASE_SERVICE_KEY');
+const JWT_SECRET = getEnv('JWT_SECRET_KEY');
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
 
