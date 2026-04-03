@@ -1,0 +1,263 @@
+.inspect-page {
+  min-height: 100vh;
+  padding-bottom: var(--space-12);
+}
+
+.inspect-loading {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  color: var(--outline);
+}
+
+.hidden-input {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  opacity: 0;
+}
+
+/* 顶部 */
+.inspect-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.inspect-header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+}
+
+.inspect-header-center {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.inspect-step-badge {
+  font-family: var(--font-headline);
+  font-weight: 700;
+  font-size: 0.9375rem;
+  color: var(--on-surface);
+}
+
+.inspect-progress-mini {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--on-surface-variant);
+}
+
+.inspect-progress-bar {
+  height: 3px;
+  background: var(--surface-container);
+}
+
+.inspect-progress-fill {
+  height: 100%;
+  background: var(--primary-gradient);
+  transition: width var(--transition-slow);
+}
+
+/* 主体 */
+.inspect-main {
+  padding-top: var(--space-6);
+}
+
+.inspect-group-label {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--primary);
+  margin-bottom: var(--space-2);
+}
+
+.inspect-step-title {
+  font-family: var(--font-headline);
+  font-size: 1.375rem;
+  font-weight: 800;
+  color: var(--on-surface);
+  margin-bottom: var(--space-2);
+}
+
+.inspect-step-desc {
+  font-size: 0.875rem;
+  color: var(--on-surface-variant);
+  margin-bottom: var(--space-6);
+  line-height: 1.5;
+}
+
+/* 图片区域 */
+.inspect-image-area {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-bottom: var(--space-6);
+  background: var(--surface-container-low);
+  position: relative;
+}
+
+.inspect-reference,
+.inspect-photo-preview,
+.inspect-skipped {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.inspect-reference-img,
+.inspect-photo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: var(--surface-container-lowest);
+}
+
+.inspect-reference-label {
+  position: absolute;
+  bottom: var(--space-3);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--on-primary);
+  background: rgba(38, 24, 19, 0.6);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-full);
+  backdrop-filter: blur(4px);
+}
+
+.inspect-photo-check {
+  position: absolute;
+  top: var(--space-3);
+  right: var(--space-3);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: var(--on-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-md);
+}
+
+.inspect-skipped {
+  flex-direction: column;
+  gap: var(--space-3);
+  color: var(--outline);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+/* 操作按钮 */
+.inspect-actions {
+  display: flex;
+  gap: var(--space-3);
+  margin-bottom: var(--space-6);
+}
+
+.inspect-capture-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-4) !important;
+  font-size: 1rem;
+}
+
+.inspect-skip-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 0.875rem;
+  white-space: nowrap;
+}
+
+/* 步骤导航 */
+.inspect-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: var(--space-6);
+}
+
+.inspect-nav-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: 0.875rem;
+}
+
+.inspect-nav-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* 步骤缩略图 */
+.inspect-thumbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  padding-bottom: var(--space-8);
+}
+
+.inspect-thumb {
+  width: 40px;
+  height: 32px;
+  border-radius: var(--radius-md);
+  background: var(--surface-container);
+  color: var(--on-surface-variant);
+  font-size: 0.625rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all var(--transition-fast);
+}
+
+.inspect-thumb--active {
+  border: 2px solid var(--primary);
+}
+
+.inspect-thumb--done {
+  background: rgba(234, 85, 4, 0.2) !important;
+  color: var(--primary);
+}
+
+.inspect-thumb--skipped {
+  background: var(--surface-container-high);
+  color: var(--outline);
+  text-decoration: line-through;
+}
+
+/* 桌面端适配 */
+@media (min-width: 768px) {
+  .inspect-image-area {
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .inspect-actions {
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}

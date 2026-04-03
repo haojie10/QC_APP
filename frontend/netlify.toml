@@ -1,0 +1,24 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+  functions = "netlify/functions"
+
+[dev]
+  framework = "vite"
+  command = "npm run dev"
+  port = 8888
+  targetPort = 5173
+  publish = "dist"
+
+# API 重定向：将 /api/xxx 映射到 Netlify Functions
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+
+# SPA 路由：对于非 API 且非静态文件的请求回退到 index.html
+# 注意：在本地开发模式下，Netlify Dev 通常会自动处理 Vite 的 SPA 路由
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

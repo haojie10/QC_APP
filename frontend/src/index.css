@@ -1,0 +1,231 @@
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
+@import './styles/design-tokens.css';
+
+/* 全局重置 */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--on-surface);
+  background-color: var(--background);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* 标题字体 */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-headline);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--on-surface);
+}
+
+/* 链接 */
+a {
+  color: var(--primary);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--primary-dark);
+}
+
+/* 按钮基础 */
+button {
+  font-family: var(--font-body);
+  cursor: pointer;
+  border: none;
+  outline: none;
+  transition: all var(--transition-normal);
+}
+
+/* 主按钮 */
+.btn-primary {
+  background: var(--primary-gradient);
+  color: var(--on-primary);
+  font-family: var(--font-headline);
+  font-weight: 700;
+  padding: var(--space-3) var(--space-6);
+  border-radius: var(--radius-full);
+  font-size: 1rem;
+  box-shadow: var(--shadow-md);
+  letter-spacing: 0.02em;
+}
+
+.btn-primary:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-1px);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* 幽灵按钮 */
+.btn-ghost {
+  background: transparent;
+  color: var(--primary);
+  font-weight: 600;
+  padding: var(--space-3) var(--space-6);
+  border-radius: var(--radius-full);
+  border: 1.5px solid rgba(227, 191, 178, 0.2);
+}
+
+.btn-ghost:hover {
+  background: var(--surface-container);
+}
+
+/* 输入框（无边框设计） */
+.input-field {
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  background: var(--surface-container-highest);
+  color: var(--on-surface);
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  border: none;
+  border-radius: var(--radius-lg);
+  border-bottom: 2px solid transparent;
+  transition: border-color var(--transition-fast);
+}
+
+.input-field:focus {
+  border-bottom-color: var(--primary);
+  outline: none;
+}
+
+.input-field::placeholder {
+  color: var(--outline);
+}
+
+/* 标签 */
+.input-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--on-surface-variant);
+  margin-bottom: var(--space-1);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* 卡片（无边框，色差分层） */
+.card {
+  background: var(--surface-container-lowest);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--transition-normal);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+/* 玻璃态容器 */
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+}
+
+/* 状态标签 */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-full);
+}
+
+.status-badge--success {
+  background: rgba(234, 85, 4, 0.1);
+  color: var(--primary);
+}
+
+.status-badge--pending {
+  background: rgba(95, 94, 94, 0.1);
+  color: var(--secondary);
+}
+
+.status-badge--error {
+  background: rgba(186, 26, 26, 0.1);
+  color: var(--error);
+}
+
+.status-badge--progress {
+  background: rgba(234, 85, 4, 0.08);
+  color: var(--primary-dark);
+}
+
+/* 响应式容器 */
+.container {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 0 var(--space-4);
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 720px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    max-width: 1024px;
+  }
+}
+
+/* 滚动条美化 */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--surface-container-low);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--outline-variant);
+  border-radius: var(--radius-full);
+}
+
+/* 页面过渡 */
+.page-enter {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+.page-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity var(--transition-normal), transform var(--transition-normal);
+}
+
+#root {
+  min-height: 100vh;
+}

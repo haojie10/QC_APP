@@ -1,0 +1,181 @@
+.admin-page {
+  min-height: 100vh;
+  padding-bottom: var(--space-12);
+}
+
+.admin-tag {
+  font-size: 0.625rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--primary);
+  background: rgba(234, 85, 4, 0.1);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  margin-left: var(--space-3);
+}
+
+.admin-main {
+  padding-top: var(--space-8);
+}
+
+.admin-section {
+  margin-bottom: var(--space-10);
+}
+
+.admin-section-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-headline);
+  font-size: 1.25rem;
+  margin-bottom: var(--space-4);
+  color: var(--primary);
+}
+
+/* 创建表单 */
+.admin-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.admin-form-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+}
+
+@media (min-width: 768px) {
+  .admin-form-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* 创建结果 */
+.admin-result {
+  margin-top: var(--space-4);
+  border-left: 3px solid var(--primary);
+}
+
+.admin-result-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: var(--space-4);
+}
+
+.admin-result-icon {
+  color: var(--primary);
+}
+
+.admin-result-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.admin-result-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.875rem;
+}
+
+.admin-result-row span {
+  color: var(--on-surface-variant);
+}
+
+.admin-result-row strong {
+  color: var(--on-surface);
+}
+
+.admin-result-row--password {
+  background: var(--surface-container);
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+}
+
+.admin-password-display {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.admin-password-code {
+  font-family: 'Courier New', monospace;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--primary);
+  letter-spacing: 0.15em;
+}
+
+.admin-copy-btn {
+  padding: var(--space-1) !important;
+  border-radius: var(--radius-sm) !important;
+}
+
+/* 搜索 */
+.admin-search {
+  position: relative;
+  margin-bottom: var(--space-4);
+}
+
+.admin-search-icon {
+  position: absolute;
+  left: var(--space-3);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--outline);
+  pointer-events: none;
+}
+
+.admin-search-input {
+  padding-left: var(--space-8) !important;
+}
+
+/* 报告列表 */
+.admin-reports-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.admin-report-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+}
+
+.admin-report-order {
+  font-family: var(--font-headline);
+  font-weight: 700;
+  font-size: 0.9375rem;
+}
+
+.admin-report-meta {
+  font-size: 0.75rem;
+  color: var(--on-surface-variant);
+  margin-top: var(--space-1);
+}
+
+.admin-report-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-shrink: 0;
+}
+
+.admin-action-btn {
+  padding: var(--space-2) !important;
+  border-radius: var(--radius-md) !important;
+}
+
+.admin-action-btn--danger:hover {
+  color: var(--error) !important;
+  background: var(--error-container) !important;
+}
