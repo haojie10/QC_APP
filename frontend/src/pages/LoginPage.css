@@ -35,44 +35,107 @@
 
 .login-container {
   width: 100%;
-  max-width: 400px;
+  max-width: 440px;
   padding: var(--space-10) var(--space-8);
   border-radius: var(--radius-xl);
   text-align: center;
   position: relative;
   z-index: 1;
-  animation: fadeUp 0.5s ease-out;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 
+    var(--shadow-xl),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+  animation: containerFadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-@keyframes fadeUp {
+@keyframes containerFadeUp {
   from {
     opacity: 0;
-    transform: translateY(16px);
+    transform: translateY(24px) scale(0.98);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
   }
 }
 
 /* 品牌区域 */
 .login-brand {
-  margin-bottom: var(--space-8);
+  margin-bottom: var(--space-10);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* 装饰性光晕 */
+.brand-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 160px;
+  height: 160px;
+  background: radial-gradient(circle, rgba(234, 85, 4, 0.08) 0%, transparent 70%);
+  border-radius: 50%;
+  z-index: -1;
+  animation: pulseGlow 4s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+  50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.8; }
 }
 
 .login-logo {
-  height: 56px;
+  height: 64px;
   width: auto;
-  margin-bottom: var(--space-3);
+  margin-bottom: var(--space-4);
+  filter: drop-shadow(0 4px 12px rgba(234, 85, 4, 0.15));
+  animation: logoScaleIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes logoScaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8) translateY(10px);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: blur(0);
+  }
 }
 
 .login-subtitle {
   font-family: var(--font-headline);
-  font-size: 0.875rem;
-  font-weight: 600;
+  font-size: 0.8125rem;
+  font-weight: 700;
   color: var(--on-surface-variant);
-  letter-spacing: 0.15em;
+  letter-spacing: 0.28em;
   text-transform: uppercase;
+  margin-left: 0.28em; /* 抵消末尾字母间距实现真正的居中 */
+  opacity: 0;
+  animation: subtitleSlideIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: 0.4s;
+  background: linear-gradient(to right, var(--on-surface-variant), var(--outline));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@keyframes subtitleSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+    letter-spacing: 0.1em;
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    letter-spacing: 0.28em;
+  }
 }
 
 /* 表单 */

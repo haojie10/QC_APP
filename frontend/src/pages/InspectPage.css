@@ -171,13 +171,13 @@
   margin-bottom: var(--space-6);
 }
 
-.inspect-capture-btn {
+.btn-primary.inspect-capture-btn {
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: var(--space-2);
-  padding: var(--space-4) !important;
+  padding: var(--space-4);
   font-size: 1rem;
 }
 
@@ -236,8 +236,8 @@
   border: 2px solid var(--primary);
 }
 
-.inspect-thumb--done {
-  background: rgba(234, 85, 4, 0.2) !important;
+.inspect-thumb.inspect-thumb--done {
+  background: rgba(234, 85, 4, 0.2);
   color: var(--primary);
 }
 

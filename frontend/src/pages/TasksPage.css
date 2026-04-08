@@ -40,9 +40,9 @@
   color: var(--on-surface-variant);
 }
 
-.tasks-logout-btn {
-  padding: var(--space-2) !important;
-  border-radius: var(--radius-md) !important;
+.btn-ghost.tasks-logout-btn {
+  padding: var(--space-2);
+  border-radius: var(--radius-md);
 }
 
 /* 标题 */

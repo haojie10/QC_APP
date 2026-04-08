@@ -17,9 +17,9 @@
   height: 56px;
 }
 
-.items-back-btn {
-  padding: var(--space-2) !important;
-  border-radius: var(--radius-md) !important;
+.btn-ghost.items-back-btn {
+  padding: var(--space-2);
+  border-radius: var(--radius-md);
 }
 
 .items-header-title {

@@ -49,6 +49,7 @@ export default function LoginPage() {
       <div className="login-container glass">
         {/* 品牌 Logo */}
         <div className="login-brand">
+          <div className="brand-glow" />
           <img
             src="/brand/Howstoday logo  orange.png"
             alt="HOWSTODAY"

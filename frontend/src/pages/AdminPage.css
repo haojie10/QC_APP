@@ -112,9 +112,9 @@
   letter-spacing: 0.15em;
 }
 
-.admin-copy-btn {
-  padding: var(--space-1) !important;
-  border-radius: var(--radius-sm) !important;
+.btn-ghost.admin-copy-btn {
+  padding: var(--space-1);
+  border-radius: var(--radius-sm);
 }
 
 /* 搜索 */
@@ -132,8 +132,8 @@
   pointer-events: none;
 }
 
-.admin-search-input {
-  padding-left: var(--space-8) !important;
+.input-field.admin-search-input {
+  padding-left: var(--space-8);
 }
 
 /* 报告列表 */
@@ -170,12 +170,12 @@
   flex-shrink: 0;
 }
 
-.admin-action-btn {
-  padding: var(--space-2) !important;
-  border-radius: var(--radius-md) !important;
+.btn-ghost.admin-action-btn {
+  padding: var(--space-2);
+  border-radius: var(--radius-md);
 }
 
-.admin-action-btn--danger:hover {
-  color: var(--error) !important;
-  background: var(--error-container) !important;
+.btn-ghost.admin-action-btn--danger:hover {
+  color: var(--error);
+  background: var(--error-container);
 }
