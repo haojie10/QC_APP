@@ -124,6 +124,15 @@ export function generateReport(itemId: string) {
   });
 }
 
+/**
+ * 生成 Excel 报告：调用 Netlify Function
+ */
+export function generateExcelReport(itemId: string) {
+  return request<{ excel_url: string }>(`/api/reports/${itemId}/generate-excel`, {
+    method: 'POST',
+  });
+}
+
 // =================== 以下类型定义供页面使用（实际查询在 supabase.ts）===================
 
 export interface Order {

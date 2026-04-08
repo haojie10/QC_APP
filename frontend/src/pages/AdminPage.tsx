@@ -124,9 +124,9 @@ export default function AdminPage() {
   const handleDownloadReport = async (itemId: string) => {
     try {
       setGeneratingId(itemId);
-      const result = await api.generateReport(itemId);
-      if (result.pdf_url) {
-        window.open(result.pdf_url, '_blank');
+      const result = await api.generateExcelReport(itemId);
+      if (result.excel_url) {
+        window.open(result.excel_url, '_blank');
       }
     } catch (err) {
       alert(err instanceof Error ? err.message : '生成报告失败');

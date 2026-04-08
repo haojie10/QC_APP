@@ -4,7 +4,7 @@
  */
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { generateReport, recordPhotoUpload, skipStepUpload } from '../services/api';
+import { generateExcelReport, recordPhotoUpload, skipStepUpload } from '../services/api';
 import { getItemProgress } from '../lib/supabase';
 import { ALL_STEPS, STEP_GROUPS, type StepConfig } from '../config/steps';
 import { compressImage } from '../utils/imageCompress';
@@ -166,26 +166,26 @@ export default function InspectPage() {
     if (!itemId) return;
 
     // NOTE: 必须在同步点击事件中调用 window.open，否则浏览器会拦截弹窗
-    const pdfWindow = window.open('about:blank', '_blank');
+    const excelWindow = window.open('about:blank', '_blank');
 
     try {
       setUploading(true);
       setReportUrl(null);
-      const result = await generateReport(itemId);
+      const result = await generateExcelReport(itemId);
 
-      if (result.pdf_url) {
-        setReportUrl(result.pdf_url);
-        // 将已打开的空白窗口重定向到 PDF 地址
-        if (pdfWindow && !pdfWindow.closed) {
-          pdfWindow.location.href = result.pdf_url;
+      if (result.excel_url) {
+        setReportUrl(result.excel_url);
+        // 将已打开的空白窗口重定向到 Excel 地址
+        if (excelWindow && !excelWindow.closed) {
+          excelWindow.location.href = result.excel_url;
         }
       } else {
         // 没有返回 URL，关闭空白窗口
-        pdfWindow?.close();
+        excelWindow?.close();
         setErrorMsg('报告生成成功但未返回下载地址');
       }
     } catch (err: any) {
-      pdfWindow?.close();
+      excelWindow?.close();
       console.error('生成报告失败:', err);
       setErrorMsg(`生成报告失败: ${err.message || '请重试'}`);
     } finally {

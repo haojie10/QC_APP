@@ -5,7 +5,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import type { OrderItem } from '../services/api';
-import { generateReport } from '../services/api';
+import { generateExcelReport } from '../services/api';
 import { getOrderItems } from '../lib/supabase';
 import {
   ArrowLeft, Package, CheckCircle2, Clock,
@@ -54,9 +54,9 @@ export default function ItemsPage() {
     e.stopPropagation();
     try {
       setDownloadingItemId(itemId);
-      const result = await generateReport(itemId);
-      if (result.pdf_url) {
-        window.open(result.pdf_url, '_blank');
+      const result = await generateExcelReport(itemId);
+      if (result.excel_url) {
+        window.open(result.excel_url, '_blank');
       }
     } catch (err) {
       alert(err instanceof Error ? err.message : '生成报告失败');

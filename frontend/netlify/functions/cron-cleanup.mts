@@ -87,6 +87,18 @@ export default async (req: Request) => {
       } else {
         console.log(`[Cron] 尝试删除了过期的验货报告文件`);
       }
+
+      // 6. 物理删除订单（由于数据库设置了 CASCADE，会自动删除关联的 order_items 和 photos 记录）
+      const { error: delOrdersErr } = await supabase
+        .from('orders')
+        .delete()
+        .in('id', orderIds);
+      
+      if (delOrdersErr) {
+        console.error('[Cron] 删除过期订单失败:', delOrdersErr);
+      } else {
+        console.log(`[Cron] 已成功物理删除 ${orderIds.length} 个过期订单及其关联数据`);
+      }
     }
 
     // 6. 清理已经超时的废弃临时账号 (超过 7 天的 users, is_admin=false)

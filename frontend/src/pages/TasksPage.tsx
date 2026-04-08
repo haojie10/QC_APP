@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
-import { generateReport } from '../services/api';
+import { generateExcelReport } from '../services/api';
 import type { Order } from '../services/api';
 import { getOrders, getOrderItems } from '../lib/supabase';
 import {
@@ -35,9 +35,9 @@ export default function TasksPage() {
         return;
       }
       for (const item of completedItems) {
-        const result = await generateReport(item.id);
-        if (result.pdf_url) {
-          window.open(result.pdf_url, '_blank');
+        const result = await generateExcelReport(item.id);
+        if (result.excel_url) {
+          window.open(result.excel_url, '_blank');
         }
       }
     } catch (err) {
