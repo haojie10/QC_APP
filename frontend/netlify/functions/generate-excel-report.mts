@@ -15,25 +15,26 @@ function getEnv(key: string): string {
   return val;
 }
 
-// 步骤名称与 Excel 坐标的映射
-const STEP_MAPPING: Record<string, { col: number, row: number, endCol: number }> = {
-  "1.1": { col: 1, row: 9, endCol: 3 },  // A9-C9
-  "1.2": { col: 4, row: 9, endCol: 6 },  // D9-F9
-  "1.3": { col: 7, row: 9, endCol: 9 },  // G9-I9
-  "2.1": { col: 1, row: 12, endCol: 3 }, // A12-C12
-  "2.2": { col: 4, row: 12, endCol: 6 }, // D12-F12
-  "2.3": { col: 1, row: 14, endCol: 3 }, // A14-C14
-  "2.4": { col: 4, row: 14, endCol: 6 }, // D14-F14
-  "3.1": { col: 1, row: 17, endCol: 5 }, // A17-E17
-  "3.2": { col: 6, row: 17, endCol: 9 }, // F17-I17
-  "4.1": { col: 1, row: 22, endCol: 5 }, // A22-E22
-  "4.2": { col: 6, row: 22, endCol: 9 }, // F22-I22
-  "4.3": { col: 1, row: 24, endCol: 5 }, // A24-E24
-  "4.4": { col: 6, row: 24, endCol: 9 }, // F24-I24
-  "5.1": { col: 1, row: 27, endCol: 5 }, // A27-E27
-  "5.2": { col: 6, row: 27, endCol: 9 }, // F27-I27
-  "5.3": { col: 1, row: 29, endCol: 5 }, // A29-E29
-  "5.4": { col: 6, row: 29, endCol: 9 }, // F29-I29
+// 步骤名称与 Excel 坐标的映射 (1-based, 但 tl 使用 0-indexed)
+// NOTE: 根据模版分析，奇数行为标签，偶数行为图片区域
+const STEP_MAPPING: Record<string, { col: number, row: number }> = {
+  "1.1": { col: 1, row: 9 },  // A9: 大货
+  "1.2": { col: 6, row: 9 },  // F9: 外箱
+  "1.3": { col: 1, row: 11 }, // A11: 开箱
+  "2.1": { col: 1, row: 14 }, // A14: 外箱长度
+  "2.2": { col: 6, row: 14 }, // F14: 外箱宽度
+  "2.3": { col: 1, row: 16 }, // A16: 外箱高度
+  "2.4": { col: 6, row: 16 }, // F16: 外箱毛重
+  "3.1": { col: 1, row: 19 }, // A19: 正唛
+  "3.2": { col: 6, row: 19 }, // F19: 侧唛
+  "4.1": { col: 1, row: 22 }, // A22: 产品带包装
+  "4.2": { col: 6, row: 22 }, // F22: 产品裸机
+  "4.3": { col: 1, row: 24 }, // A24: 产品标识
+  "4.4": { col: 6, row: 24 }, // F24: 产品附件
+  "5.1": { col: 1, row: 27 }, // A27: 产品长度
+  "5.2": { col: 6, row: 27 }, // F27: 产品宽度
+  "5.3": { col: 1, row: 29 }, // A29: 产品高度
+  "5.4": { col: 6, row: 29 }, // F29: 产品净重
 };
 
 /** 校验 JWT Token */
@@ -49,14 +50,21 @@ function verifyToken(req: Request): { sub: string; factoryName: string } {
   };
 }
 
+/** 将本地文件读为 Buffer/Uint8Array */
+function getLocalAssetAsBuffer(fileName: string): Uint8Array {
+  const assetPath = path.resolve(__dirname, `assets/${fileName}`);
+  if (!fs.existsSync(assetPath)) throw new Error(`资产不存在: ${assetPath}`);
+  return new Uint8Array(fs.readFileSync(assetPath));
+}
+
 /** 下载图片并转为 Buffer */
-async function fetchImageAsBuffer(url: string): Promise<Buffer | null> {
+async function fetchImageAsBuffer(url: string): Promise<Uint8Array | null> {
   try {
     const response = await fetch(url, { signal: AbortSignal.timeout(8000) });
     if (!response.ok) return null;
     // NOTE: 使用 Uint8Array 以兼容更多的运行环境并解决类型识别问题
     const arrayBuffer = await response.arrayBuffer();
-    return new Uint8Array(arrayBuffer) as any;
+    return new Uint8Array(arrayBuffer);
   } catch (error) {
     console.error(`图片下载失败: ${url}`, error);
     return null;
@@ -120,6 +128,18 @@ export default async (req: Request, _context: Context) => {
 
     if (!worksheet) throw new Error("无法读取模版 Sheet1");
 
+    // 2.1 替换 Logo (A2:E5 区域)
+    const logoBuffer = getLocalAssetAsBuffer("brand-logo.png");
+    const logoId = workbook.addImage({
+      buffer: logoBuffer as any,
+      extension: "png",
+    });
+    worksheet.addImage(logoId, {
+      tl: { col: 0.1, row: 1.1 }, // 略微偏移以避免压线
+      ext: { width: 330, height: 80 }, // Logo 适配区域
+      editAs: 'oneCell'
+    });
+
     const order = item.orders;
     // 3. 填充基础信息
     worksheet.getCell("H2").value = order.inspection_date || "";
@@ -147,11 +167,11 @@ export default async (req: Request, _context: Context) => {
             extension: "jpeg",
           });
 
-          // NOTE: exceljs 的 tl 坐标是 0 索引，且支持浮点偏移实现精准居中
-          // 减去 0.9 / 0.95 目的是为了微调边距，使图片在合并单元格中显示更和谐
+          // NOTE: 根据用户反馈，图片缩小 20% (基于原 330x235 -> 264x188)
+          // 并微调偏移量实现居中感
           worksheet.addImage(imageId, {
-            tl: { col: mapping.col - 0.9, row: mapping.row - 0.95 },
-            ext: { width: 330, height: 235 }, 
+            tl: { col: mapping.col - 0.8, row: mapping.row - 0.9 },
+            ext: { width: 264, height: 188 }, 
             editAs: 'oneCell'
           });
         }
