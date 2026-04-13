@@ -33,7 +33,7 @@ app.add_middleware(
 )
 
 # 注册路由
-app.include_router(auth_router, prefix="/api/auth", tags=["认证"])
+app.include_router(auth_router, prefix="/api", tags=["认证"])
 app.include_router(tasks_router, prefix="/api", tags=["任务"])
 app.include_router(photos_router, prefix="/api/photos", tags=["拍照"])
 app.include_router(reports_router, prefix="/api/reports", tags=["报告"])

@@ -8,14 +8,15 @@ import string
 from datetime import datetime, timedelta, timezone
 
 from jose import jwt
-from passlib.context import CryptContext
+import bcrypt
 from supabase import Client
 
 from config import settings
 
 logger = logging.getLogger(__name__)
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+# 使用 bcrypt 直接进行哈希和校验
+# 注意：bcrypt 只能处理最长 72 位的密码
 
 
 def generate_random_password(length: int = 8) -> str:
@@ -58,7 +59,7 @@ def create_account(
         # 账号已存在则更新密码和有效期
         user_id = existing.data[0]["id"]
         supabase.table("users").update({
-            "password_hash": pwd_context.hash(raw_password),
+            "password_hash": bcrypt.hashpw(raw_password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8'),
             "created_at": now.isoformat(),
             "expires_at": expires_at.isoformat(),
         }).eq("id", user_id).execute()
@@ -67,7 +68,7 @@ def create_account(
         # 创建新账号
         user_result = supabase.table("users").insert({
             "factory_name": factory_name,
-            "password_hash": pwd_context.hash(raw_password),
+            "password_hash": bcrypt.hashpw(raw_password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8'),
             "created_at": now.isoformat(),
             "expires_at": expires_at.isoformat(),
             "is_admin": False,
@@ -118,12 +119,20 @@ def login(supabase: Client, factory_name: str, password: str) -> dict:
     user = result.data[0]
 
     # 校验密码
-    if not pwd_context.verify(password, user["password_hash"]):
-        raise ValueError("密码错误")
+    try:
+        if not bcrypt.checkpw(password.encode('utf-8'), user["password_hash"].encode('utf-8')):
+            raise ValueError("密码错误")
+    except Exception as e:
+        logger.error("密码校验失败: %s", e)
+        raise ValueError(f"密码校验失败: {str(e)}")
 
     # 校验有效期（管理员不受限）
     if not user.get("is_admin"):
-        expires_at = datetime.fromisoformat(user["expires_at"].replace("Z", "+00:00"))
+        expires_at_val = user.get("expires_at")
+        if not expires_at_val:
+             raise ValueError("账号无效：缺少过期时间")
+        
+        expires_at = datetime.fromisoformat(str(expires_at_val).replace("Z", "+00:00"))
         if datetime.now(timezone.utc) > expires_at:
             raise ValueError("账号已过期，请联系管理员获取新密码")
 

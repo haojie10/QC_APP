@@ -2,6 +2,7 @@
 认证相关请求/响应 Schema
 """
 from pydantic import BaseModel, Field
+from typing import Optional
 
 
 class LoginRequest(BaseModel):
@@ -15,7 +16,7 @@ class LoginResponse(BaseModel):
     token: str = Field(..., description="JWT Token")
     factory_name: str
     is_admin: bool = False
-    expires_at: str = Field(..., description="账号过期时间")
+    expires_at: Optional[str] = Field(None, description="账号过期时间")
 
 
 class CreateAccountRequest(BaseModel):
