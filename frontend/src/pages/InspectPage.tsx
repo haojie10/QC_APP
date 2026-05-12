@@ -302,21 +302,22 @@ export default function InspectPage() {
         </div>
 
         {/* 操作按钮区 */}
-        {!allDone ? (
-          <div className="inspect-actions">
-            <button
-              className="btn-primary inspect-capture-btn"
-              onClick={handleCapture}
-              disabled={uploading}
-            >
-              {uploading ? (
-                <Loader2 className="spin-icon" size={20} />
-              ) : (
-                <Camera size={20} />
-              )}
-              <span>{currentStatus?.status === 'uploaded' ? '重新拍照' : '拍照'}</span>
-            </button>
+        <div className="inspect-actions">
+          {/* 拍照 / 重新拍照 按钮 - 始终显示 */}
+          <button
+            className={allDone ? "btn-ghost inspect-skip-btn" : "btn-primary inspect-capture-btn"}
+            onClick={handleCapture}
+            disabled={uploading}
+          >
+            {uploading && !allDone ? (
+              <Loader2 className="spin-icon" size={20} />
+            ) : (
+              <Camera size={allDone ? 16 : 20} />
+            )}
+            <span>{currentStatus?.status === 'uploaded' ? '重新拍照' : '拍照'}</span>
+          </button>
 
+          {!allDone ? (
             <button
               className="btn-ghost inspect-skip-btn"
               onClick={handleSkip}
@@ -325,9 +326,7 @@ export default function InspectPage() {
               <SkipForward size={16} />
               <span>跳过 (N/A)</span>
             </button>
-          </div>
-        ) : (
-          <div className="inspect-actions">
+          ) : (
             <button
               className="btn-primary inspect-capture-btn"
               onClick={handleGenerateReport}
@@ -340,18 +339,22 @@ export default function InspectPage() {
               )}
               <span>生成验货报告</span>
             </button>
-            {reportUrl && (
-              <a
-                href={reportUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-ghost inspect-skip-btn"
-                style={{ textDecoration: 'none', color: 'var(--primary)' }}
-              >
-                <Download size={16} />
-                <span>点击下载报告</span>
-              </a>
-            )}
+          )}
+        </div>
+
+        {/* 报告下载链接 - 移出主操作区 */}
+        {allDone && reportUrl && (
+          <div style={{ marginTop: 'var(--space-2)', marginBottom: 'var(--space-4)', display: 'flex', justifyContent: 'center' }}>
+            <a
+              href={reportUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-ghost inspect-skip-btn"
+              style={{ textDecoration: 'none', color: 'var(--primary)' }}
+            >
+              <Download size={16} />
+              <span>点击下载报告</span>
+            </a>
           </div>
         )}
 
