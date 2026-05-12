@@ -305,14 +305,14 @@ export default function InspectPage() {
         <div className="inspect-actions">
           {/* 拍照 / 重新拍照 按钮 - 始终显示 */}
           <button
-            className={allDone ? "btn-ghost inspect-skip-btn" : "btn-primary inspect-capture-btn"}
+            className={`inspect-capture-btn ${allDone ? "btn-ghost" : "btn-primary"}`}
             onClick={handleCapture}
             disabled={uploading}
           >
             {uploading && !allDone ? (
               <Loader2 className="spin-icon" size={20} />
             ) : (
-              <Camera size={allDone ? 16 : 20} />
+              <Camera size={20} />
             )}
             <span>{currentStatus?.status === 'uploaded' ? '重新拍照' : '拍照'}</span>
           </button>
